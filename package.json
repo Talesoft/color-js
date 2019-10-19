@@ -1,0 +1,55 @@
+{
+    "name": "@talesoft/color",
+    "description": "A color manipulation library",
+    "keywords": [
+        "color",
+        "colors",
+        "color manipulation",
+        "rgb",
+        "hsl",
+        "rgba",
+        "hsla",
+        "hex color",
+        "color conversion",
+        "manipulation",
+        "conversion"
+    ],
+    "version": "0.1.0",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "homepage": "https://github.com/Talesoft/color-js",
+    "license": "MIT",
+    "readme": "https://github.com/Talesoft/color-js/blob/master/README.md",
+    "repository": {
+        "url": "https://github.com/Talesoft/color-js",
+        "type": "git"
+    },
+    "author": {
+        "name": "Torben Köhn",
+        "email": "t.koehn@outlook.com",
+        "url": "https://talesoft.codes"
+    },
+    "contributors": [],
+    "bugs": {
+        "url": "https://github.com/Talesoft/color-js/issues",
+        "email": "t.koehn@outlook.com"
+    },
+    "scripts": {
+        "build": "tsc",
+        "test": "jest",
+        "test:coverage": "jest --coverage",
+        "lint": "tslint --project tsconfig.json 'src/**/*.ts'",
+        "lint:fix": "tslint --project tsconfig.json 'src/**/*.ts' --fix"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@types/jest": "^24.0.18",
+        "@types/jest-each": "^0.3.4",
+        "jest": "^24.9.0",
+        "jest-each": "^24.9.0",
+        "ts-jest": "^24.1.0",
+        "tslint": "^5.20.0",
+        "tslint-config-airbnb": "^5.11.1",
+        "typescript": "^3.6.3"
+    }
+}

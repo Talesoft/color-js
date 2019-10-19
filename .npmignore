@@ -1,0 +1,9 @@
+/node_modules
+/jest.config.js
+/tsconfig.json
+/tslint.json
+/src
+/tests
+/.idea
+/.travis.yml
+/CONTRIBUTING.md

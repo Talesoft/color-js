@@ -1,0 +1,38 @@
+
+language: node_js
+cache: npm
+node_js:
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+before_script:
+    - export VERSION_COMPARISON=$(dpkg --compare-versions $TRAVIS_NODE_VERSION eq 11)
+    - >-
+        if [[ $VERSION_COMPARISON -eq 0 ]]; then
+            echo "Installing test reporter"
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-reporter
+            chmod +x ./cc-reporter
+            ./cc-reporter before-build
+        fi;
+script:
+    - npm run test:coverage
+    - npm run lint
+    # Validate that a new build was added
+    - npm run build
+    - git status
+    - git diff
+    - >-
+        if [[ $(git status --porcelain | wc -l) -gt 0 ]]; then
+            echo -e "\e[41mNo build was added. Run 'npm run build && git add --all' and commit & push again.\e[49m";
+            exit 1;
+        fi;
+after_script:
+    - >-
+        if [[ $VERSION_COMPARISON -eq 0 ]]; then
+            echo "Reporting test results and coverage"
+            ./cc-reporter after-build --exit-code $TRAVIS_TEST_RESULT --coverage-input-type lcov
+        fi;

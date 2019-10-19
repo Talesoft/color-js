@@ -2,6 +2,7 @@ import { Color } from './colors';
 import { COLOR_CONVERTERS } from './converters';
 import { toFunctionExpression, toHexExpression, parseHexExpression, parseFunctionExpression } from './expressions';
 import { ColorSpace, getColorSpaceScales } from './spaces';
+import { COLOR_NAMES } from './color-names';
 
 export function createColor(space: ColorSpace, data: number[]) {
     return new Color(space, data);

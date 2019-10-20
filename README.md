@@ -58,10 +58,7 @@ Directly access known colors and manipulate them:
 ```typescript
 import Color from '@talesoft/color';
 
-
-
 const darkRed = Color.red.darken(.2);
-
 console.log(`Dark red is: ${darkRed}`); // "Dark red is: #900"
 ```
 
@@ -79,16 +76,10 @@ Use the `dye` template tag or `Color.parse` to quickly parse and modify own colo
 ```typescript
 import Color, { dye } from '@talesoft/color';
 
-
-
 const darkRed = dye`#f00`.darken(.2);
-
 console.log(`Dark red is: ${darkRed}`);
 
-
-
 const darkGreen = Color.parse('rgb(0, 255, 0)').darken(.2);
-
 console.log(`Dark green is: ${darkGreen}`);
 ```
 
@@ -96,8 +87,6 @@ console.log(`Dark green is: ${darkGreen}`);
 
 ```typescript
 import Color, { dye } from '@talesoft/color';
-
-
 
 const red = Color.parse('#f00');
 
@@ -255,6 +244,3 @@ npm run build
 
 [contribution-guidelines]: [https://...coming-soon...](https://github.com/Talesoft/color-js/blob/master/CONTRIBUTING.md)
 [nodejs-download]: https://nodejs.org/en/
-
-
-

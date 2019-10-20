@@ -7,7 +7,6 @@ describe('COLOR_CONVERTERS', () => {
     describe('RGB', () => {
         describe('-> RGB', () => {
             it('should return a copy with the same values', () => {
-                expect(Color.red.darken(.2).toString()).toBe('');
                 const color = createRgbColor(0, 127, 255);
                 const convertedColor = toSpace(color, ColorSpace.RGB);
                 expect(color).toBe(convertedColor);

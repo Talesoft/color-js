@@ -10,9 +10,7 @@ export interface SchemeGenerationOptions extends SchemeOptions {
 }
 
 export type SchemeGenerator = (color: Color, value: number) => Color;
-
 export type Scheme<K extends string> = { [TKey in K]: Color; };
-
 export type ColorLightShadeScheme = Scheme<'normal' | 'light' | 'lighter' | 'lightest'>;
 export type ColorDarkShadeScheme = Scheme<'normal' | 'dark' | 'darker' | 'darkest'>;
 export type ColorShadeScheme = ColorLightShadeScheme | ColorDarkShadeScheme;

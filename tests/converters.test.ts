@@ -3,7 +3,7 @@ import { Color, createRgbaColor, createRgbColor } from '../src/colors';
 import { toSpace } from '../src/functions';
 import { ColorSpace } from '../src/spaces';
 
-describe('COLOR_CONVERTERS', () => {
+describe('colorConverters', () => {
     describe('RGB', () => {
         describe('-> RGB', () => {
             it('should return a copy with the same values', () => {

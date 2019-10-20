@@ -1,5 +1,4 @@
-import { Color, createHslColor, createRgbColor } from './colors';
-import { toSpace } from './functions';
+import { Color } from './colors';
 import { ColorSpace, getColorSpaceScales } from './spaces';
 
 const { min, max } = Math;
@@ -7,7 +6,7 @@ const { min, max } = Math;
 export type ColorConverter = (color: Color) => Color;
 export type ColorConverterMap = { [KFrom in ColorSpace]: { [KTo in ColorSpace]: ColorConverter }; };
 
-export const COLOR_CONVERTERS: ColorConverterMap = {
+export const colorConverters: ColorConverterMap = {
     // RGB
     [ColorSpace.RGB]: {
         // RGB -> RGB
@@ -42,7 +41,7 @@ export const COLOR_CONVERTERS: ColorConverterMap = {
             }
 
             const [hScale, sScale, lScale] = getColorSpaceScales(ColorSpace.HSL);
-            return createHslColor(h * hScale, s * sScale, l * lScale);
+            return Color.hsl(h * hScale, s * sScale, l * lScale);
         },
         // RGB -> HSLA
         [ColorSpace.HSLA]: color => new Color(ColorSpace.HSLA, [...toSpace(color, ColorSpace.HSL).data, 1]),
@@ -87,7 +86,7 @@ export const COLOR_CONVERTERS: ColorConverterMap = {
             }
 
             const [rScale, gScale, bScale] = getColorSpaceScales(ColorSpace.RGB);
-            return createRgbColor(r * rScale, g * gScale, b * bScale);
+            return Color.rgb(r * rScale, g * gScale, b * bScale);
         },
         // HSL -> RGBA
         [ColorSpace.RGBA]: color => new Color(ColorSpace.RGBA, [...toSpace(color, ColorSpace.RGB).data, 1]),
@@ -111,6 +110,13 @@ export const COLOR_CONVERTERS: ColorConverterMap = {
         [ColorSpace.HSLA]: color => new Color(ColorSpace.HSLA, [...color.data]),
     },
 };
+
+export function toSpace(color: Color, targetSpace: ColorSpace) {
+    if (color.space === targetSpace) {
+        return color;
+    }
+    return colorConverters[color.space][targetSpace](color);
+}
 
 function getRgbFromHue(p: number, q: number, t: number) {
     let nt = t;

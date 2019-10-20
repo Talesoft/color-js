@@ -1,14 +1,13 @@
-import { Color, createColor, createRgbColor } from './colors';
-import { toRgb } from './functions';
+import { Color, toRgb } from './colors';
 import { ColorSpace, ColorUnit, getColorSpaceMetadata } from './spaces';
 
 const { round } = Math;
 
-const FUNCTION_REGEX = /(\w+)\(([^\)]+)\)/;
-const ARG_UNIT_REGEX = /([\d.]+)([\w%]+)?/;
+const functionPattern = /(\w+)\(([^\)]+)\)/;
+const argUnitPattern = /([\d.]+)([\w%]+)?/;
 
 export function parseFunctionExpression(value: string) {
-    const matches = value.match(FUNCTION_REGEX);
+    const matches = value.match(functionPattern);
     if (!matches) {
         throw new Error('Passed string is not a valid color function expression');
     }
@@ -22,7 +21,7 @@ export function parseFunctionExpression(value: string) {
         );
     }
     const data = metadata.channels.map(({ type, scale }, i) => parseFunctionArg(argStrings[i], type, scale));
-    return createColor(space as ColorSpace, data);
+    return Color.create(space as ColorSpace, data);
 }
 
 export function toFunctionExpression(info: Color) {
@@ -40,7 +39,7 @@ export function parseHexExpression(value: string) {
     const r = short ? digits[0] + digits[0] : digits[0] + digits[1];
     const g = short ? digits[1] + digits[1] : digits[2] + digits[3];
     const b = short ? digits[2] + digits[2] : digits[4] + digits[5];
-    return createRgbColor(parseInt(r, 16), parseInt(g, 16), parseInt(b, 16));
+    return Color.rgb(parseInt(r, 16), parseInt(g, 16), parseInt(b, 16));
 }
 
 export function toHexExpression(color: Color) {
@@ -53,7 +52,7 @@ export function toHexExpression(color: Color) {
 }
 
 function parseFunctionArg(valueString: string, type: 'int' | 'float', scale: number) {
-    const matches = valueString.match(ARG_UNIT_REGEX);
+    const matches = valueString.match(argUnitPattern);
     if (!matches) {
         throw new Error(`Invalid argument format for argument ${valueString}`);
     }
@@ -69,7 +68,7 @@ function parseFunctionArg(valueString: string, type: 'int' | 'float', scale: num
 }
 
 function toFunctionArg(value: number, type: 'int' | 'float', scale: number, unit: ColorUnit) {
-    let stringValue = type === 'int' ? Math.round(value).toFixed(0) : value.toFixed(3);
+    let stringValue = type === 'int' ? round(value).toFixed(0) : value.toFixed(3);
     if (stringValue !== '0') {
         stringValue = stringValue.replace(/[.0]+$/, '');
     }

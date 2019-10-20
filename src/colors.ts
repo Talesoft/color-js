@@ -241,6 +241,7 @@ export class Color {
     public static readonly crimsonGlory = Color.rgb(190, 0, 50);
     public static readonly cyan = Color.rgb(0, 255, 255);
     public static readonly cyanProcess = Color.rgb(0, 183, 235);
+    public static readonly cyberYellow = Color.rgb(255, 211, 0);
     public static readonly daffodil = Color.rgb(255, 255, 49);
     public static readonly dandelion = Color.rgb(240, 225, 48);
     public static readonly darkBlue = Color.rgb(0, 0, 139);

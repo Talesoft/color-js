@@ -11,9 +11,9 @@ export interface SchemeGenerationOptions extends SchemeOptions {
 
 export type SchemeGenerator = (color: Color, value: number) => Color;
 export type Scheme<K extends string> = { [TKey in K]: Color; };
-export type ColorLightShadeScheme = Scheme<'normal' | 'light' | 'lighter' | 'lightest'>;
-export type ColorDarkShadeScheme = Scheme<'normal' | 'dark' | 'darker' | 'darkest'>;
-export type ColorShadeScheme = ColorLightShadeScheme | ColorDarkShadeScheme;
+export type LightShadeScheme = Scheme<'normal' | 'light' | 'lighter' | 'lightest'>;
+export type DarkShadeScheme = Scheme<'normal' | 'dark' | 'darker' | 'darkest'>;
+export type ShadeScheme = LightShadeScheme | DarkShadeScheme;
 
 export function *generateScheme(color: Color, generate: SchemeGenerator, options?: SchemeGenerationOptions) {
     const { start, step, length } = { start: 0, step: .1, length: 5, ...options };
@@ -38,15 +38,15 @@ export function createScheme<K extends string, T extends Scheme<K>>(
     return result as T;
 }
 
-export function createLightShadeScheme(color: Color, options?: SchemeOptions): ColorLightShadeScheme {
+export function createLightShadeScheme(color: Color, options?: SchemeOptions): LightShadeScheme {
     return createScheme(color, ['normal', 'light', 'lighter', 'lightest'], lighten, options);
 }
 
-export function createDarkShadeScheme(color: Color, options?: SchemeOptions): ColorDarkShadeScheme {
+export function createDarkShadeScheme(color: Color, options?: SchemeOptions): DarkShadeScheme {
     return createScheme(color, ['normal', 'dark', 'darker', 'darkest'], lighten, options);
 }
 
-export function createShadeScheme(color: Color, options?: SchemeOptions): ColorShadeScheme {
+export function createShadeScheme(color: Color, options?: SchemeOptions): ShadeScheme {
     return {
         ...createLightShadeScheme(color, options),
         ...createDarkShadeScheme(color, options),

@@ -901,7 +901,7 @@ export declare class Color {
     readonly opacity: number;
     readonly lightShades: Scheme<"normal" | "light" | "lighter" | "lightest">;
     readonly darkShades: Scheme<"normal" | "dark" | "darker" | "darkest">;
-    readonly shades: import("./schemes").ColorShadeScheme;
+    readonly shades: import("./schemes").ShadeScheme;
     readonly complements: Scheme<"primary" | "secondary">;
     readonly analogousComplements: Scheme<"primary" | "secondary" | "tertiary">;
     readonly splitComplements: Scheme<"primary" | "secondary" | "tertiary">;
@@ -944,7 +944,7 @@ export declare class Color {
     createScheme<K extends string, T extends Scheme<K>>(keys: K[], generate: SchemeGenerator, options?: SchemeOptions): T;
     createLightShades(options?: SchemeOptions): Scheme<"normal" | "light" | "lighter" | "lightest">;
     createDarkShades(options?: SchemeOptions): Scheme<"normal" | "dark" | "darker" | "darkest">;
-    createShades(options?: SchemeOptions): import("./schemes").ColorShadeScheme;
+    createShades(options?: SchemeOptions): import("./schemes").ShadeScheme;
     toFunctionExpression(): string;
     toHexExpression(): string;
     toString(): string;

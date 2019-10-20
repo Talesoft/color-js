@@ -17,7 +17,7 @@ What can it do
 ==============
 
 - **Parsing of different color formats**
-  - **865** different color names ([List](https://github.com/codebrainz/color-names/blob/master/output/colors.csv))
+  - **866** different color names ([List](https://github.com/codebrainz/color-names/blob/master/output/colors.csv))
   - Hexadecimal colors (e.g. `#f0a` or `#ef0bac`)
   - CSS color functions (e.g. `rgb(255, 127, 0)` or `hsla(180, 1, .5)`)
 - **Convert colors between different color spaces. Supported/planned spaces:**

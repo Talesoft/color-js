@@ -890,8 +890,8 @@ export declare class Color {
     static readonly zaffre: Color;
     static readonly zinnwalditeBrown: Color;
     readonly space: ColorSpace;
-    readonly data: ReadonlyArray<number>;
-    constructor(space: ColorSpace, data: ReadonlyArray<number>);
+    readonly data: readonly number[];
+    constructor(space: ColorSpace, data: readonly number[]);
     readonly red: number;
     readonly green: number;
     readonly blue: number;
@@ -941,7 +941,7 @@ export declare class Color {
     tone(value: number): Color;
     fadeIn(value: number): Color;
     fadeOut(value: number): Color;
-    createScheme<K extends string, T extends Scheme<K>>(keys: K[], generate: SchemeGenerator, options?: SchemeOptions): T;
+    createScheme<K extends string, T extends Scheme<K>>(keys: readonly K[], generate: SchemeGenerator, options?: SchemeOptions): T;
     createLightShades(options?: SchemeOptions): Scheme<"normal" | "light" | "lighter" | "lightest">;
     createDarkShades(options?: SchemeOptions): Scheme<"normal" | "dark" | "darker" | "darkest">;
     createShades(options?: SchemeOptions): import("./schemes").ShadeScheme;

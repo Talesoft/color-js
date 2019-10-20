@@ -909,9 +909,9 @@ export class Color {
     public static readonly zinnwalditeBrown = Color.rgb(44, 22, 8);
 
     public readonly space: ColorSpace;
-    public readonly data: ReadonlyArray<number>;
+    public readonly data: readonly number[];
 
-    constructor(space: ColorSpace, data: ReadonlyArray<number>) {
+    constructor(space: ColorSpace, data: readonly number[]) {
         this.space = space;
         this.data = data;
     }
@@ -1113,7 +1113,7 @@ export class Color {
     }
 
     public createScheme<K extends string, T extends Scheme<K>>(
-        keys: K[],
+        keys: readonly K[],
         generate: SchemeGenerator,
         options?: SchemeOptions,
     ): T {

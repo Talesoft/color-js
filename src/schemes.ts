@@ -24,7 +24,7 @@ export function *generateScheme(color: Color, generate: SchemeGenerator, options
 
 export function createScheme<K extends string, T extends Scheme<K>>(
     color: Color,
-    keys: K[],
+    keys: readonly K[],
     generate: SchemeGenerator,
     options?: SchemeOptions,
 ): T {

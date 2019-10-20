@@ -14,7 +14,7 @@ export declare type LightShadeScheme = Scheme<'normal' | 'light' | 'lighter' | '
 export declare type DarkShadeScheme = Scheme<'normal' | 'dark' | 'darker' | 'darkest'>;
 export declare type ShadeScheme = LightShadeScheme | DarkShadeScheme;
 export declare function generateScheme(color: Color, generate: SchemeGenerator, options?: SchemeGenerationOptions): Generator<Color, void, unknown>;
-export declare function createScheme<K extends string, T extends Scheme<K>>(color: Color, keys: K[], generate: SchemeGenerator, options?: SchemeOptions): T;
+export declare function createScheme<K extends string, T extends Scheme<K>>(color: Color, keys: readonly K[], generate: SchemeGenerator, options?: SchemeOptions): T;
 export declare function createLightShadeScheme(color: Color, options?: SchemeOptions): LightShadeScheme;
 export declare function createDarkShadeScheme(color: Color, options?: SchemeOptions): DarkShadeScheme;
 export declare function createShadeScheme(color: Color, options?: SchemeOptions): ShadeScheme;

@@ -1,36 +1,33 @@
-import { Color, toRgb } from './colors';
-import { ColorSpace, ColorUnit, getSpaceMetadata } from './spaces';
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const colors_1 = require("./colors");
+const spaces_1 = require("./spaces");
 const { round } = Math;
-
 const functionPattern = /(\w+)\(([^\)]+)\)/;
 const argUnitPattern = /([\d.]+)([\w%]+)?/;
-
-export function parseFunctionExpression(value: string) {
+function parseFunctionExpression(value) {
     const matches = value.match(functionPattern);
     if (!matches) {
         throw new Error('Passed string is not a valid color function expression');
     }
     const [, space, argString] = matches;
-    const metadata = getSpaceMetadata(space as ColorSpace);
+    const metadata = spaces_1.getSpaceMetadata(space);
     const argStrings = argString.split(',').map(s => s.trim());
     if (metadata.channels.length !== argStrings.length) {
-        throw new Error(
-            `Invalid number of arguments given to ${space}(), ` +
-            `expected ${metadata.channels.length}, got ${argStrings.length}`,
-        );
+        throw new Error(`Invalid number of arguments given to ${space}(), ` +
+            `expected ${metadata.channels.length}, got ${argStrings.length}`);
     }
     const data = metadata.channels.map(({ type, scale }, i) => parseFunctionArg(argStrings[i], type, scale));
-    return Color.create(space as ColorSpace, data);
+    return colors_1.Color.create(space, data);
 }
-
-export function toFunctionExpression(info: Color) {
-    const metadata = getSpaceMetadata(info.space as ColorSpace);
+exports.parseFunctionExpression = parseFunctionExpression;
+function toFunctionExpression(info) {
+    const metadata = spaces_1.getSpaceMetadata(info.space);
     const args = metadata.channels.map(({ type, scale, unit }, i) => toFunctionArg(info.data[i], type, scale, unit));
     return `${info.space}(${args.join(',')})`;
 }
-
-export function parseHexExpression(value: string) {
+exports.toFunctionExpression = toFunctionExpression;
+function parseHexExpression(value) {
     if ((value.length !== 4 && value.length !== 7) || !value.startsWith('#')) {
         throw new Error('A hex color expression needs to start with a # and have 3 or 6 hex digits');
     }
@@ -39,26 +36,26 @@ export function parseHexExpression(value: string) {
     const r = short ? digits[0] + digits[0] : digits[0] + digits[1];
     const g = short ? digits[1] + digits[1] : digits[2] + digits[3];
     const b = short ? digits[2] + digits[2] : digits[4] + digits[5];
-    return Color.rgb(parseInt(r, 16), parseInt(g, 16), parseInt(b, 16));
+    return colors_1.Color.rgb(parseInt(r, 16), parseInt(g, 16), parseInt(b, 16));
 }
-
-export function toHexExpression(color: Color) {
-    const rgbColor = toRgb(color);
+exports.parseHexExpression = parseHexExpression;
+function toHexExpression(color) {
+    const rgbColor = colors_1.toRgb(color);
     let hex = rgbColor.data.reduce((s, v) => s + round(v).toString(16).padStart(2, '0'), '');
     if (hex[0] === hex[1] && hex[2] === hex[3] && hex[4] === hex[5]) {
         hex = hex[0] + hex[2] + hex[4];
     }
     return `#${hex}`;
 }
-
-function parseFunctionArg(valueString: string, type: 'int' | 'float', scale: number) {
+exports.toHexExpression = toHexExpression;
+function parseFunctionArg(valueString, type, scale) {
     const matches = valueString.match(argUnitPattern);
     if (!matches) {
         throw new Error(`Invalid argument format for argument ${valueString}`);
     }
-    const [, value, unit = ColorUnit.FIXED] = matches;
+    const [, value, unit = spaces_1.ColorUnit.FIXED] = matches;
     let numericValue = parseFloat(value);
-    if (unit === ColorUnit.PERCENT) {
+    if (unit === spaces_1.ColorUnit.PERCENT) {
         numericValue = numericValue / 100 * scale;
     }
     if (type === 'int') {
@@ -66,13 +63,12 @@ function parseFunctionArg(valueString: string, type: 'int' | 'float', scale: num
     }
     return numericValue;
 }
-
-function toFunctionArg(value: number, type: 'int' | 'float', scale: number, unit: ColorUnit) {
+function toFunctionArg(value, type, scale, unit) {
     let stringValue = type === 'int' ? round(value).toFixed(0) : value.toFixed(3);
     if (stringValue !== '0') {
         stringValue = stringValue.replace(/[.0]+$/, '');
     }
-    if (unit === ColorUnit.PERCENT) {
+    if (unit === spaces_1.ColorUnit.PERCENT) {
         stringValue = `${scale / value * 100}%`;
     }
     return stringValue;

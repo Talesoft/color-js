@@ -1,6 +1,6 @@
 {
     "name": "@talesoft/color",
-    "description": "A color manipulation library",
+    "description": "A powerful color manipulation and generation library with theming in mind.",
     "keywords": [
         "color",
         "colors",
@@ -12,7 +12,10 @@
         "hex color",
         "color conversion",
         "manipulation",
-        "conversion"
+        "conversion",
+        "hue",
+        "lighten",
+        "darken"
     ],
     "version": "0.1.0",
     "main": "dist/index.js",

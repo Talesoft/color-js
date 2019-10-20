@@ -1,66 +1,28 @@
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * The color spaces this library supports.
  */
-export enum ColorSpace {
-    RGB = 'rgb',
-    RGBA = 'rgba',
-    HSL = 'hsl',
-    HSLA = 'hsla',
+var ColorSpace;
+(function (ColorSpace) {
+    ColorSpace["RGB"] = "rgb";
+    ColorSpace["RGBA"] = "rgba";
+    ColorSpace["HSL"] = "hsl";
+    ColorSpace["HSLA"] = "hsla";
     // HSV = 'hsv',
     // HSVA = 'hsva',
     // CMYK = 'cmyk',
     // XYZ = 'xyz',
     // LAB = 'lab',
-}
-
+})(ColorSpace = exports.ColorSpace || (exports.ColorSpace = {}));
 /**
  * The unit of color values in color function expressions.
  */
-export enum ColorUnit {
-    FIXED = '',
-    PERCENT = '%',
-}
-
-/**
- * The interface for color space metadata
- *
- * @see COLOR_SPACES
- */
-export interface ColorSpaceMetadata {
-    /**
-     * The color channels of a color space.
-     */
-    channels: Array<{
-        /**
-         * The scale we apply before and after calculations.
-         *
-         * This allows us to modify colors with human-readable, reasonable numeric values.
-         *
-         * <sample>
-         *     Red in RGB is not stored as a number between 0-1, but 0-255. The scale is 255.
-         * </sample>
-         * <sample>
-         *     Hue in HSL is not stored as a number between 0-1, but 0-360. The scale is 360.
-         * </sample>
-         */
-        scale: number;
-
-        /**
-         * The type values of this channel get casted to.
-         */
-        type: 'int' | 'float';
-
-        /**
-         * The unit a value is output in by this library.
-         *
-         * This is primarily used in color function expressions
-         * (e.g. CSS expects saturation and lightness in hsl() expressions to be % values)
-         */
-        unit: ColorUnit;
-    }>;
-}
-
+var ColorUnit;
+(function (ColorUnit) {
+    ColorUnit["FIXED"] = "";
+    ColorUnit["PERCENT"] = "%";
+})(ColorUnit = exports.ColorUnit || (exports.ColorUnit = {}));
 /**
  * Metadata that is stored for each color space.
  *
@@ -69,7 +31,7 @@ export interface ColorSpaceMetadata {
  * @see ColorSpace
  * @see ColorSpaceMetadata
  */
-export const COLOR_SPACES: { [K in ColorSpace]?: ColorSpaceMetadata } = {
+exports.COLOR_SPACES = {
     [ColorSpace.RGB]: {
         channels: [
             { scale: 255, type: 'int', unit: ColorUnit.FIXED },
@@ -101,43 +63,43 @@ export const COLOR_SPACES: { [K in ColorSpace]?: ColorSpaceMetadata } = {
         ],
     },
 };
-
 /**
  * Returns all metadata of the given color space.
  *
  * @param space A color space.
  */
-export function getSpaceMetadata(space: ColorSpace) {
-    const metadata = COLOR_SPACES[space];
+function getSpaceMetadata(space) {
+    const metadata = exports.COLOR_SPACES[space];
     if (!metadata) {
         throw new Error(`Color space ${space} has no defined metadata`);
     }
     return metadata;
 }
-
+exports.getSpaceMetadata = getSpaceMetadata;
 /**
  * Returns the amount of color channels in a color space.
  *
  * @param space A color space.
  */
-export function getSpaceChannelCount(space: ColorSpace) {
+function getSpaceChannelCount(space) {
     return getSpaceMetadata(space).channels.length;
 }
-
+exports.getSpaceChannelCount = getSpaceChannelCount;
 /**
  * Returns the value scales of a color space as an array.
  *
  * @param space A color space.
  */
-export function getSpaceScales(space: ColorSpace) {
+function getSpaceScales(space) {
     return getSpaceMetadata(space).channels.map(c => c.scale);
 }
-
+exports.getSpaceScales = getSpaceScales;
 /**
  * Returns the value units of a color space as an array.
  *
  * @param space A color space.
  */
-export function getSpaceUnits(space: ColorSpace) {
+function getSpaceUnits(space) {
     return getSpaceMetadata(space).channels.map(c => c.unit);
 }
+exports.getSpaceUnits = getSpaceUnits;

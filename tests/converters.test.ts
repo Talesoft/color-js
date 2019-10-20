@@ -1,13 +1,13 @@
 import jestEach from 'jest-each';
-import { Color, createRgbaColor, createRgbColor } from '../src/colors';
-import { toSpace } from '../src/functions';
+import { Color } from '../src/colors';
+import { toSpace } from '../src/converters';
 import { ColorSpace } from '../src/spaces';
 
 describe('colorConverters', () => {
     describe('RGB', () => {
         describe('-> RGB', () => {
             it('should return a copy with the same values', () => {
-                const color = createRgbColor(0, 127, 255);
+                const color = Color.rgb(0, 127, 255);
                 const convertedColor = toSpace(color, ColorSpace.RGB);
                 expect(color).toBe(convertedColor);
             });
@@ -15,9 +15,9 @@ describe('colorConverters', () => {
 
         describe('-> RGBA', () => {
             it('should return a copy with alpha set to 1', () => {
-                const color = createRgbColor(0, 127, 255);
+                const color = Color.rgb(0, 127, 255);
                 const convertedColor = toSpace(color, ColorSpace.RGBA);
-                expect(convertedColor).toEqual(createRgbaColor(0, 127, 255, 1));
+                expect(convertedColor).toEqual(Color.rgba(0, 127, 255, 1));
             });
         });
 
@@ -34,7 +34,7 @@ describe('colorConverters', () => {
                 ${[0, 255, 0]}       | ${[120, 1, .5]}
                 ${[0, 0, 255]}       | ${[240, 1, .5]}
             `.it('should correctly convert $rgb to $hsl', ({ rgb, hsl }) => {
-                const color = new Color(ColorSpace.RGB, rgb);
+                const color = Color.create(ColorSpace.RGB, rgb);
                 const convertedColor = toSpace(color, ColorSpace.HSL);
                 expect(convertedColor.data[0]).toBeCloseTo(hsl[0], 3);
                 expect(convertedColor.data[1]).toBeCloseTo(hsl[1], 3);
@@ -60,7 +60,7 @@ describe('colorConverters', () => {
                 ${[120, 1, .5]}   | ${[0, 255, 0]}
                 ${[240, 1, .5]}   | ${[0, 0, 255]}
             `.it('should correctly convert $hsl to $rgb', ({ hsl, rgb }) => {
-                const color = new Color(ColorSpace.HSL, hsl);
+                const color = Color.create(ColorSpace.HSL, hsl);
                 const convertedColor = toSpace(color, ColorSpace.RGB);
                 expect(convertedColor.data[0]).toBeCloseTo(rgb[0], 0);
                 expect(convertedColor.data[1]).toBeCloseTo(rgb[1], 0);

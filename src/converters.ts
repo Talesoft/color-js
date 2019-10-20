@@ -1,5 +1,5 @@
 import { Color } from './colors';
-import { ColorSpace, getColorSpaceScales } from './spaces';
+import { ColorSpace, getSpaceScales } from './spaces';
 
 const { min, max } = Math;
 
@@ -15,7 +15,7 @@ export const colorConverters: ColorConverterMap = {
         [ColorSpace.RGBA]: color => new Color(ColorSpace.RGBA, [...color.data, 1]),
         // RGB -> HSL
         [ColorSpace.HSL]: color => {
-            const [rScale, gScale, bScale] = getColorSpaceScales(color.space);
+            const [rScale, gScale, bScale] = getSpaceScales(color.space);
             let [r, g, b] = color.data;
             r /= rScale;
             g /= gScale;
@@ -40,7 +40,7 @@ export const colorConverters: ColorConverterMap = {
                 h /= 6;
             }
 
-            const [hScale, sScale, lScale] = getColorSpaceScales(ColorSpace.HSL);
+            const [hScale, sScale, lScale] = getSpaceScales(ColorSpace.HSL);
             return Color.hsl(h * hScale, s * sScale, l * lScale);
         },
         // RGB -> HSLA
@@ -63,7 +63,7 @@ export const colorConverters: ColorConverterMap = {
     [ColorSpace.HSL]: {
         // HSL -> RGB
         [ColorSpace.RGB]: color => {
-            const [hScale, sScale, lScale] = getColorSpaceScales(color.space);
+            const [hScale, sScale, lScale] = getSpaceScales(color.space);
             let [h, s, l] = color.data;
             let r = 0;
             let g = 0;
@@ -85,7 +85,7 @@ export const colorConverters: ColorConverterMap = {
                 b = getRgbFromHue(p, q, h - 1 / 3);
             }
 
-            const [rScale, gScale, bScale] = getColorSpaceScales(ColorSpace.RGB);
+            const [rScale, gScale, bScale] = getSpaceScales(ColorSpace.RGB);
             return Color.rgb(r * rScale, g * gScale, b * bScale);
         },
         // HSL -> RGBA

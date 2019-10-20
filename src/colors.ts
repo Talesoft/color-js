@@ -1,6 +1,23 @@
+import { rotateValue } from './common';
 import { toSpace } from './converters';
 import { parseFunctionExpression, parseHexExpression, toFunctionExpression, toHexExpression } from './expressions';
-import { ColorSpace, getColorSpaceScales } from './spaces';
+import { mix, MixMode } from './mixers';
+import {
+    createAnalogousComplementaryScheme,
+    createComplementaryScheme,
+    createDarkShadeScheme,
+    createLightShadeScheme,
+    createScheme,
+    createShadeScheme,
+    createSplitComplementaryScheme,
+    createSquareComplementaryScheme,
+    createTetradicComplementaryScheme,
+    createTriadicComplementaryScheme,
+    Scheme,
+    SchemeGenerator,
+    SchemeOptions,
+} from './schemes';
+import { ColorSpace, getSpaceScales } from './spaces';
 
 /**
  * Color contains basic information of a color.
@@ -923,8 +940,44 @@ export class Color {
         return getLightness(this);
     }
 
-    get inverse() {
-        return invert(this);
+    get opacity() {
+        return getOpacity(this);
+    }
+
+    get lightShades() {
+        return this.createLightShades();
+    }
+
+    get darkShades() {
+        return this.createDarkShades();
+    }
+
+    get shades() {
+        return this.createShades();
+    }
+
+    get complements() {
+        return createComplementaryScheme(this);
+    }
+
+    get analogousComplements() {
+        return createAnalogousComplementaryScheme(this);
+    }
+
+    get splitComplements() {
+        return createSplitComplementaryScheme(this);
+    }
+
+    get triadicComplements() {
+        return createTriadicComplementaryScheme(this);
+    }
+
+    get squareComplements() {
+        return createSquareComplementaryScheme(this);
+    }
+
+    get tetradicComplements() {
+        return createTetradicComplementaryScheme(this);
     }
 
     public isSpace(space: ColorSpace) {
@@ -991,10 +1044,6 @@ export class Color {
         return toAnyOpaque(this);
     }
 
-    public opacity() {
-        return getOpacity(this);
-    }
-
     public withRed(value: number) {
         return withRed(this, value);
     }
@@ -1023,8 +1072,20 @@ export class Color {
         return withOpacity(this, value);
     }
 
-    public complement() {
-        return complement(this);
+    public invert() {
+        return invert(this);
+    }
+
+    public grayscale() {
+        return grayscale(this);
+    }
+
+    public complement(value: number = 180) {
+        return complement(this, value);
+    }
+
+    public mix(color: Color, mode: MixMode = MixMode.RGB_SUBTRACTIVE) {
+        return mix(this, color, mode);
     }
 
     public lighten(value: number) {
@@ -1043,16 +1104,32 @@ export class Color {
         return tone(this, value);
     }
 
-    public grayscale() {
-        return grayscale(this);
-    }
-
     public fadeIn(value: number) {
         return fadeIn(this, value);
     }
 
     public fadeOut(value: number) {
         return fadeOut(this, value);
+    }
+
+    public createScheme<K extends string, T extends Scheme<K>>(
+        keys: K[],
+        generate: SchemeGenerator,
+        options?: SchemeOptions,
+    ): T {
+        return createScheme(this, keys, generate, options);
+    }
+
+    public createLightShades(options?: SchemeOptions) {
+        return createLightShadeScheme(this, options);
+    }
+
+    public createDarkShades(options?: SchemeOptions) {
+        return createDarkShadeScheme(this, options);
+    }
+
+    public createShades(options?: SchemeOptions) {
+        return createShadeScheme(this, options);
     }
 
     public toFunctionExpression() {
@@ -1089,17 +1166,13 @@ export class Color {
 
     public static parse(value: string) {
         if (value in Color && Color[value as keyof typeof Color] instanceof Color) {
-            return Color[value as keyof typeof Color];
+            return Color[value as keyof typeof Color] as Color;
         }
         if (value.startsWith('#')) {
             return parseHexExpression(value);
         }
         return parseFunctionExpression(value);
     }
-}
-
-export function dye(literals: TemplateStringsArray) {
-    return Color.parse(literals.raw.join(''));
 }
 
 export function isSpace(color: Color, space: ColorSpace) {
@@ -1238,15 +1311,20 @@ export function withOpacity(color: Color, value: number) {
 
 export function invert(color: Color) {
     const [r, g, b, a] = toAnyRgb(color).data;
-    const [rScale, gScale, bScale] = getColorSpaceScales(ColorSpace.RGB);
+    const [rScale, gScale, bScale] = getSpaceScales(ColorSpace.RGB);
     return a !== undefined
         ? Color.rgba(rScale - r, gScale - g, bScale - b, a)
         : Color.rgb(rScale - r, gScale - g, bScale - b);
 }
 
-export function complement(color: Color) {
+export function grayscale(color: Color) {
+    return withSaturation(color, 0);
+}
+
+export function complement(color: Color, value: number = 180) {
     const hue = getHue(color);
-    return withLightness(color, hue > 180 ? hue - 180 : hue + 180);
+    const [hScale] = getSpaceScales(ColorSpace.HSL);
+    return withHue(color, rotateValue(hue + value, hScale));
 }
 
 export function lighten(color: Color, value: number) {
@@ -1265,10 +1343,6 @@ export function tone(color: Color, value: number) {
     return withSaturation(color, getSaturation(color) - value);
 }
 
-export function grayscale(color: Color) {
-    return withSaturation(color, 0);
-}
-
 export function fadeIn(color: Color, value: number) {
     return withOpacity(color, getOpacity(color) + value);
 }
@@ -1282,4 +1356,8 @@ export function toString(color: Color) {
     return isAlpha(rgbColor) && getOpacity(rgbColor) < 1
         ? toFunctionExpression(rgbColor)
         : toHexExpression(rgbColor);
+}
+
+export function dye(literals: TemplateStringsArray) {
+    return Color.parse(literals.join(''));
 }

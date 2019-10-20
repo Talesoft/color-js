@@ -426,6 +426,7 @@ Color.crimson = Color.rgb(220, 20, 60);
 Color.crimsonGlory = Color.rgb(190, 0, 50);
 Color.cyan = Color.rgb(0, 255, 255);
 Color.cyanProcess = Color.rgb(0, 183, 235);
+Color.cyberYellow = Color.rgb(255, 211, 0);
 Color.daffodil = Color.rgb(255, 255, 49);
 Color.dandelion = Color.rgb(240, 225, 48);
 Color.darkBlue = Color.rgb(0, 0, 139);

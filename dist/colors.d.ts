@@ -223,6 +223,7 @@ export declare class Color {
     static readonly crimsonGlory: Color;
     static readonly cyan: Color;
     static readonly cyanProcess: Color;
+    static readonly cyberYellow: Color;
     static readonly daffodil: Color;
     static readonly dandelion: Color;
     static readonly darkBlue: Color;

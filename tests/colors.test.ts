@@ -1,5 +1,5 @@
 import jestEach from 'jest-each';
-import { Color } from '../src/colors';
+import { parseColor } from '../src/colors';
 
 describe('Color', () => {
     describe('toString', () => {
@@ -11,7 +11,7 @@ describe('Color', () => {
             ${'rgba(0%, 50%, 100%, .5)'} | ${'rgba(0,128,255,0.5)'}
             ${'hsl(180, .5, .5)'}        | ${'#40bfbf'}
         `.it('should correctly convert $color to the string $result', ({ color, result }) => {
-            expect(Color.parse(color).toString()).toEqual(result);
+            expect(parseColor(color).toString()).toEqual(result);
         });
     });
 });

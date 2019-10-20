@@ -1,5 +1,5 @@
-import { Color } from './colors';
-import { hsl, rgb, toSpace } from './functions';
+import { Color, createHslColor, createRgbColor } from './colors';
+import { toSpace } from './functions';
 import { ColorSpace, getColorSpaceScales } from './spaces';
 
 const { min, max } = Math;
@@ -42,7 +42,7 @@ export const COLOR_CONVERTERS: ColorConverterMap = {
             }
 
             const [hScale, sScale, lScale] = getColorSpaceScales(ColorSpace.HSL);
-            return hsl(h * hScale, s * sScale, l * lScale);
+            return createHslColor(h * hScale, s * sScale, l * lScale);
         },
         // RGB -> HSLA
         [ColorSpace.HSLA]: color => new Color(ColorSpace.HSLA, [...toSpace(color, ColorSpace.HSL).data, 1]),
@@ -87,7 +87,7 @@ export const COLOR_CONVERTERS: ColorConverterMap = {
             }
 
             const [rScale, gScale, bScale] = getColorSpaceScales(ColorSpace.RGB);
-            return rgb(r * rScale, g * gScale, b * bScale);
+            return createRgbColor(r * rScale, g * gScale, b * bScale);
         },
         // HSL -> RGBA
         [ColorSpace.RGBA]: color => new Color(ColorSpace.RGBA, [...toSpace(color, ColorSpace.RGB).data, 1]),

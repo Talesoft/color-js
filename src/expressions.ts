@@ -1,5 +1,5 @@
-import { Color } from './colors';
-import { createColor, rgb, toRgb } from './functions';
+import { Color, createColor, createRgbColor } from './colors';
+import { toRgb } from './functions';
 import { ColorSpace, ColorUnit, getColorSpaceMetadata } from './spaces';
 
 const { round } = Math;
@@ -40,7 +40,7 @@ export function parseHexExpression(value: string) {
     const r = short ? digits[0] + digits[0] : digits[0] + digits[1];
     const g = short ? digits[1] + digits[1] : digits[2] + digits[3];
     const b = short ? digits[2] + digits[2] : digits[4] + digits[5];
-    return rgb(parseInt(r, 16), parseInt(g, 16), parseInt(b, 16));
+    return createRgbColor(parseInt(r, 16), parseInt(g, 16), parseInt(b, 16));
 }
 
 export function toHexExpression(color: Color) {

@@ -1,28 +1,7 @@
-import { COLOR_NAMES } from './color-names';
-import { Color } from './colors';
+import { Color, createColor, createHslaColor, createHslColor, createRgbaColor, createRgbColor } from './colors';
 import { COLOR_CONVERTERS } from './converters';
-import { parseFunctionExpression, parseHexExpression, toFunctionExpression, toHexExpression } from './expressions';
+import { toFunctionExpression, toHexExpression } from './expressions';
 import { ColorSpace, getColorSpaceScales } from './spaces';
-
-export function createColor(space: ColorSpace, data: number[]) {
-    return new Color(space, data);
-}
-
-export function rgb(r: number, g: number, b: number) {
-    return createColor(ColorSpace.RGB, [r, g, b]);
-}
-
-export function rgba(r: number, g: number, b: number, a: number) {
-    return createColor(ColorSpace.RGBA, [r, g, b, a]);
-}
-
-export function hsl(h: number, s: number, l: number) {
-    return createColor(ColorSpace.HSL, [h, s, l]);
-}
-
-export function hsla(h: number, s: number, l: number, a: number) {
-    return createColor(ColorSpace.HSLA, [h, s, l, a]);
-}
 
 export function isSpace(color: Color, space: ColorSpace) {
     return color.space === space;
@@ -107,7 +86,7 @@ export function getRed(color: Color) {
 
 export function withRed(color: Color, value: number) {
     const [, g, b, a] = toAnyRgb(color).data;
-    return a !== undefined ? rgba(value, g, b, a) : rgb(value, g, b);
+    return a !== undefined ? createRgbaColor(value, g, b, a) : createRgbColor(value, g, b);
 }
 
 export function getGreen(color: Color) {
@@ -116,7 +95,7 @@ export function getGreen(color: Color) {
 
 export function withGreen(color: Color, value: number) {
     const [r, , b, a] = toAnyRgb(color).data;
-    return a !== undefined ? rgba(r, value, b, a) : rgb(r, value, b);
+    return a !== undefined ? createRgbaColor(r, value, b, a) : createRgbColor(r, value, b);
 }
 
 export function getBlue(color: Color) {
@@ -125,7 +104,7 @@ export function getBlue(color: Color) {
 
 export function withBlue(color: Color, value: number) {
     const [r, g, , a] = toAnyRgb(color).data;
-    return a !== undefined ? rgba(r, g, value, a) : rgb(r, g, value);
+    return a !== undefined ? createRgbaColor(r, g, value, a) : createRgbColor(r, g, value);
 }
 
 export function getHue(color: Color) {
@@ -134,7 +113,7 @@ export function getHue(color: Color) {
 
 export function withHue(color: Color, value: number) {
     const [, s, l, a] = toAnyHsl(color).data;
-    return a !== undefined ? hsla(value, s, l, a) : hsl(value, s, l);
+    return a !== undefined ? createHslaColor(value, s, l, a) : createHslColor(value, s, l);
 }
 
 export function getSaturation(color: Color) {
@@ -143,7 +122,7 @@ export function getSaturation(color: Color) {
 
 export function withSaturation(color: Color, value: number) {
     const [h, , l, a] = toAnyHsl(color).data;
-    return a !== undefined ? hsla(h, value, l, a) : hsl(h, value, l);
+    return a !== undefined ? createHslaColor(h, value, l, a) : createHslColor(h, value, l);
 }
 
 export function getLightness(color: Color) {
@@ -152,7 +131,7 @@ export function getLightness(color: Color) {
 
 export function withLightness(color: Color, value: number) {
     const [h, s, , a] = toAnyHsl(color).data;
-    return a !== undefined ? hsla(h, s, value, a) : hsl(h, s, value);
+    return a !== undefined ? createHslaColor(h, s, value, a) : createHslColor(h, s, value);
 }
 
 export function getOpacity(color: Color) {
@@ -169,8 +148,8 @@ export function invert(color: Color) {
     const [r, g, b, a] = toAnyRgb(color).data;
     const [rScale, gScale, bScale] = getColorSpaceScales(ColorSpace.RGB);
     return a !== undefined
-        ? rgba(rScale - r, gScale - g, bScale - b, a)
-        : rgb(rScale - r, gScale - g, bScale - b);
+        ? createRgbaColor(rScale - r, gScale - g, bScale - b, a)
+        : createRgbColor(rScale - r, gScale - g, bScale - b);
 }
 
 export function lighten(color: Color, value: number) {
@@ -202,21 +181,8 @@ export function fadeOut(color: Color, value: number) {
 }
 
 export function toString(color: Color) {
-    return isAlpha(color) && getOpacity(color) < 1
-        ? toFunctionExpression(color)
-        : toHexExpression(color);
-}
-
-export function parseColor(value: string) {
-    if (value in COLOR_NAMES) {
-        return COLOR_NAMES[value as keyof typeof COLOR_NAMES];
-    }
-    if (value.startsWith('#')) {
-        return parseHexExpression(value);
-    }
-    return parseFunctionExpression(value);
-}
-
-export function dye(literals: TemplateStringsArray) {
-    return parseColor(literals.raw.join(''));
+    const rgbColor = toAnyRgb(color);
+    return isAlpha(rgbColor) && getOpacity(rgbColor) < 1
+        ? toFunctionExpression(rgbColor)
+        : toHexExpression(rgbColor);
 }

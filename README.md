@@ -19,13 +19,22 @@ Usage
 
 Color JS makes color manipulation a breeze.
 
-```javascript
-import { Color, Colors } from '@talesoft/color';
+```typescript
+import { Color } from '@talesoft/color';
 
-const red = Colors.RED;
+const darkRed = Color.red.darken(.5);
 
-red.fadeOut()
+console.log(`Dark red is: ${darkRed}`); // "Dark red is: #900"
+```
 
+Use `dye` to quickly create and modify own colors.
+
+```typescript
+import { dye } from '@talesoft/color';
+
+const darkRed = dye`#f00`.darken(.5);
+
+console.log(`Dark red is: ${darkRed}`);
 ```
 
 Contributing

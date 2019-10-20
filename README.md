@@ -242,5 +242,5 @@ npm run build
 // ... create branch, commit, push, merge request etc. ...
 ```
 
-[contribution-guidelines]: [https://...coming-soon...](https://github.com/Talesoft/color-js/blob/master/CONTRIBUTING.md)
+[contribution-guidelines]: https://github.com/Talesoft/color-js/blob/master/CONTRIBUTING.md
 [nodejs-download]: https://nodejs.org/en/

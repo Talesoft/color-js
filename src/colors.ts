@@ -1176,7 +1176,15 @@ export class Color {
     }
 }
 
-export function isSpace(color: Color, space: ColorSpace) {
+/**
+ * Checks if a color is in the specified color space.
+ *
+ * @param {Color} color The color you want to check
+ * @param {ColorSpace} space The color space you want to check for
+ *
+ * @returns {boolean}
+ */
+export function isSpace(color: Color, space: ColorSpace): boolean {
     return color.space === space;
 }
 
